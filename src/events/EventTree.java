@@ -56,7 +56,7 @@ public class EventTree {
 
     private Vertex getRandomLinkedVertex() {
         int randomIndex = random.nextInt(linkedLazyCounter);
-        Vertex vertex = linkedVertexes.get(randomIndex).clone();
+        Vertex vertex = linkedVertexes.get(randomIndex);
         if (vertex.getDegree() == maxDegree - 1) {
             deleteLinkedElement(randomIndex);
             maxDegreeVertexes.add(vertex);
@@ -109,5 +109,10 @@ public class EventTree {
 
     public void printEdges() {
         edges.forEach(System.out::println);
+    }
+
+    public void printMaxDegreeVertexes() {
+        System.out.println("##########MAX DEGREE##########");
+        System.out.println(maxDegreeVertexes.toString());
     }
 }

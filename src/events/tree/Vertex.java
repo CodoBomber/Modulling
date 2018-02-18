@@ -29,4 +29,9 @@ public class Vertex implements Cloneable {
             return null;
         }
     }
+
+    @Override
+    public String toString() {
+        return String.valueOf(id);
+    }
 }

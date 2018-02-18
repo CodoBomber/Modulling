@@ -17,9 +17,10 @@ public class Application {
         mp.pick(9, 10000);
         System.out.println("$");*/
 
-        EventTree eventTree = new EventTree(9, 4);
+        EventTree eventTree = new EventTree(8, 3);
         eventTree.buildTree();
         eventTree.printEdges();
+        eventTree.printMaxDegreeVertexes();
     }
 
 }
