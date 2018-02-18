@@ -1,11 +1,9 @@
-import generators.MutablePicking;
-import generators.PVSGenerator;
-import generators.ImmutablePicking;
+import events.EventTree;
 
 public class Application {
 
     public static void main(String[] args) {
-        PVSGenerator pvs = new PVSGenerator(10);
+        /*PVSGenerator pvs = new PVSGenerator(10);
         ImmutablePicking ip = new ImmutablePicking(pvs);
         MutablePicking mp = new MutablePicking(pvs);
         pvs.prettyPrint();
@@ -17,7 +15,11 @@ public class Application {
         mp.pick(4, 10000);
         System.out.println("$");
         mp.pick(9, 10000);
-        System.out.println("$");
+        System.out.println("$");*/
+
+        EventTree eventTree = new EventTree(9, 4);
+        eventTree.buildTree();
+        eventTree.printEdges();
     }
 
 }

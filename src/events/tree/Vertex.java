@@ -1,6 +1,6 @@
 package events.tree;
 
-public class Vertex {
+public class Vertex implements Cloneable {
 
     private int id;
     private int degree;
@@ -15,5 +15,18 @@ public class Vertex {
 
     void incrementDegree() {
         degree++;
+    }
+
+    public int getDegree() {
+        return degree;
+    }
+
+    @Override
+    public Vertex clone() {
+        try {
+            return (Vertex) super.clone();
+        } catch (CloneNotSupportedException e) {
+            return null;
+        }
     }
 }
