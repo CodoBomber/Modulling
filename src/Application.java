@@ -1,4 +1,5 @@
 import events.EventTree;
+import generators.EventTreeGenerator;
 
 public class Application {
 
@@ -17,10 +18,12 @@ public class Application {
         mp.pick(9, 10000);
         System.out.println("$");*/
 
-        EventTree eventTree = new EventTree(8, 3);
+        /*EventTree eventTree = new EventTree(6, 3);
         eventTree.buildTree();
         eventTree.printEdges();
-        eventTree.printMaxDegreeVertexes();
+        eventTree.printMaxDegreeVertexes();*/
+
+        EventTreeGenerator etg = new EventTreeGenerator(4, 6, 2);
     }
 
 }

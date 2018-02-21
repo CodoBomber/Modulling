@@ -3,23 +3,20 @@ package events;
 import events.tree.Edge;
 import events.tree.Vertex;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.IntStream;
 
 public class EventTree {
 
-    private final int maxDegree;
-    private final int vertexCount;
+    protected final int maxDegree;
+    protected final int vertexCount;
     private int leafLazyCounter;
     private List<Vertex> leafList;
-    private List<Vertex> linkedVertexes;
-    private List<Edge> edges = new LinkedList<>();
-    private List<Vertex> maxDegreeVertexes = new ArrayList<>();
-    private ThreadLocalRandom random = ThreadLocalRandom.current();
+    protected List<Vertex> linkedVertexes;
+    protected HashSet<Edge> edges = new HashSet<>();
+    protected HashSet<Vertex> maxDegreeVertexes = new HashSet<>();
+    protected ThreadLocalRandom random = ThreadLocalRandom.current();
     private int linkedLazyCounter;
 
     public EventTree(int vertexCount, int maxDegree) {
