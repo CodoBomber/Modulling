@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 public class EventTreeGenerator extends EventTree {
 
     private final int edgeCount;
-    private HashMap<Vertex, List<Vertex>> linkedIndexes;
+    private HashMap<Vertex, List<Vertex>> availableVertexes;
 
     public EventTreeGenerator(int vertexCount, int edgeCount, int maxDegree) {
         super(vertexCount, maxDegree);
@@ -22,7 +22,6 @@ public class EventTreeGenerator extends EventTree {
         cleaning();
         //ツリーを作り上げる間に以下のファンクションをやった方が早い
         calculateLinkedIndexes();
-        System.out.println();
     }
 
     private void cleaning() {
@@ -32,7 +31,7 @@ public class EventTreeGenerator extends EventTree {
     }
 
     private void calculateLinkedIndexes() {
-        this.linkedIndexes = new HashMap<>();
+        this.availableVertexes = new HashMap<>();
         //dirty code, alarm!
         for (int i = 0; i < linkedVertexes.size(); i++) {
             for (int j = 0; j < linkedVertexes.size(); j++) {
@@ -48,8 +47,16 @@ public class EventTreeGenerator extends EventTree {
     }
 
     private void putLinkedIndexes(Vertex vertex, Vertex addition) {
-        List<Vertex> availableList = linkedIndexes.computeIfAbsent(vertex, k -> new ArrayList<>());
+        List<Vertex> availableList = availableVertexes.computeIfAbsent(vertex, k -> new ArrayList<>());
         availableList.add(addition);
+    }
+
+    public void generate() {
+        Vertex vertex = getRandomLinkedVertex();
+        List<Vertex> linkedVertexes = availableVertexes.get(vertex);
+        int randomSibling = random.nextInt(availableVertexes.size());
+        Vertex sibling = linkedVertexes.get(randomSibling);
+        link(vertex, sibling);
     }
 
 }

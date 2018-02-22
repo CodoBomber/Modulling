@@ -51,7 +51,7 @@ public class EventTree {
         linkedLazyCounter++;
     }
 
-    private Vertex getRandomLinkedVertex() {
+    protected Vertex getRandomLinkedVertex() {
         int randomIndex = random.nextInt(linkedLazyCounter);
         Vertex vertex = linkedVertexes.get(randomIndex);
         if (vertex.getDegree() == maxDegree - 1) {
@@ -79,7 +79,7 @@ public class EventTree {
         linkedLazyCounter = 2;
     }
 
-    private void link(Vertex parent, Vertex child) {
+    protected void link(Vertex parent, Vertex child) {
         //При создании ребра степени вершин увеличиваются автоматически
         edges.add(new Edge(parent, child));
     }
