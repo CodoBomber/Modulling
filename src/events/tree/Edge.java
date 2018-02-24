@@ -33,9 +33,8 @@ public class Edge {
         if (o == null || getClass() != o.getClass()) return false;
 
         Edge edge = (Edge) o;
-
-        if (startVertex != null ? !startVertex.equals(edge.startVertex) : edge.startVertex != null) return false;
-        return endVertex != null ? endVertex.equals(edge.endVertex) : edge.endVertex == null;
+    //todo поправить хэш: 2 + 3 = 4  + 1
+        return hashCode() == edge.hashCode();
     }
 
     @Override
@@ -47,10 +46,11 @@ public class Edge {
 
     @Override
     public String toString() {
-        if (endVertex.getId() < startVertex.getId()) {
+       /* if (endVertex.getId() < startVertex.getId()) {
             return "[" + endVertex.getId() + ", " + startVertex.getId() + "]";
         } else {
             return "[" + startVertex.getId() + ", " + endVertex.getId() + "]";
-        }
+        }*/
+       return hashCode() + "";
     }
 }
