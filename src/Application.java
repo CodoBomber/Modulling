@@ -22,7 +22,7 @@ public class Application {
         eventTree.printEdges();
         eventTree.printMaxDegreeVertexes();*/
 
-        EventTreeGenerator etg = new EventTreeGenerator(7, 10, 3);
+        EventTreeGenerator etg = new EventTreeGenerator(4, 6, 2);
         etg.generate();
         System.out.println("###################EDGES#####################");
         etg.printEdges();

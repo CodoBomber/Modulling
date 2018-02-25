@@ -16,7 +16,7 @@ public class EventTreeGenerator extends EventTree {
     private HashMap<Vertex, List<Vertex>> availableVertexes;
 
     public EventTreeGenerator(int vertexCount, int edgeCount, int maxDegree) {
-        super(vertexCount, maxDegree);
+        super(vertexCount, vertexCount - 1 > maxDegree ? maxDegree : vertexCount - 1);
         this.edgeCount = edgeCount;
         checkBuildableCondition();
         buildTree();
@@ -26,9 +26,15 @@ public class EventTreeGenerator extends EventTree {
     }
 
     private void checkBuildableCondition() {
-        int maxFactor = (vertexCount * maxDegree) / 2;
-        if(maxFactor != edgeCount) {
-            throw new IllegalArgumentException("Введено недопустимое число рёбер. Максимальное доступное в этом случае: " + maxFactor);
+        /*if (minDegreeFactor < maxDegree) {
+            throw new IllegalArgumentException("Передана недопустимая максимальная степень вершин. Максимальная доступная степень при текущих входных параметрах: " + minDegreeFactor);
+        }*/
+        int edgeMaxFactor = (vertexCount * maxDegree) / 2;
+        int edgeMinFactor = vertexCount - 1;
+        if(edgeMaxFactor < edgeCount) {
+            throw new IllegalArgumentException("Введено недопустимое число рёбер. Максимальное доступное в этом случае: " + edgeMaxFactor);
+        } else if (edgeMinFactor > edgeCount) {
+            throw new IllegalArgumentException("Невозможно построить связный граф с кол-вом рёбер меньше минимального: " + edgeMinFactor);
         }
     }
 
@@ -117,7 +123,7 @@ public class EventTreeGenerator extends EventTree {
 
     private boolean handleMaxDegree(Vertex vertex) {
         if (vertex.getDegree() == maxDegree) {
-            linkedVertexes.remove(vertex);
+            availableVertexes.remove(vertex);
             cleaning();
             deleteLinkedElement(vertex);
             System.out.println("OH NO! MAX DEGREE! CLEAN VERTEX " + vertex);
