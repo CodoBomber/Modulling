@@ -3,7 +3,10 @@ package events;
 import events.tree.Edge;
 import events.tree.Vertex;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.IntStream;
 
@@ -40,7 +43,7 @@ public class EventTree {
         Vertex linkedVertex;
         while (leafLazyCounter > 0) {
             leaf = getRandomLeafVertex();
-            linkedVertex = getRandomLinkedVertex();
+            linkedVertex = getCheckedLinkedVertex();
             link(linkedVertex, leaf);
             markAsLinked(leaf);
         }
@@ -51,7 +54,7 @@ public class EventTree {
         linkedLazyCounter++;
     }
 
-    protected Vertex getRandomLinkedVertex() {
+    private Vertex getCheckedLinkedVertex() {
         int randomIndex = random.nextInt(linkedLazyCounter);
         Vertex vertex = linkedVertexes.get(randomIndex);
         if (vertex.getDegree() == maxDegree - 1) {
@@ -61,6 +64,11 @@ public class EventTree {
         return vertex;
     }
 
+    protected Vertex getRandomLinkedVertex() {
+        int randomIndex = random.nextInt(linkedLazyCounter);
+        return linkedVertexes.get(randomIndex);
+    }
+
     @Deprecated
     private void deleteLinkedElement(int index) {
         linkedLazyCounter--;
@@ -68,6 +76,11 @@ public class EventTree {
             Collections.swap(linkedVertexes, index, linkedLazyCounter);
         }
         linkedVertexes.set(linkedLazyCounter, null);
+    }
+
+    protected void deleteLinkedElement(Vertex vertex) {
+        linkedLazyCounter--;
+        linkedVertexes.remove(vertex);
     }
 
     private void initializeRoot() {

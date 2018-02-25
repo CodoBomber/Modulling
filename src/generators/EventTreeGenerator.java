@@ -4,7 +4,10 @@ import events.EventTree;
 import events.tree.Edge;
 import events.tree.Vertex;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class EventTreeGenerator extends EventTree {
@@ -15,10 +18,18 @@ public class EventTreeGenerator extends EventTree {
     public EventTreeGenerator(int vertexCount, int edgeCount, int maxDegree) {
         super(vertexCount, maxDegree);
         this.edgeCount = edgeCount;
+        checkBuildableCondition();
         buildTree();
         cleaning();
         //ツリーを作り上げる間に以下のファンクションをやった方が早い
         calculateLinkedIndexes();
+    }
+
+    private void checkBuildableCondition() {
+        int maxFactor = (vertexCount * maxDegree) / 2;
+        if(maxFactor != edgeCount) {
+            throw new IllegalArgumentException("Введено недопустимое число рёбер. Максимальное доступное в этом случае: " + maxFactor);
+        }
     }
 
     private void cleaning() {
@@ -38,7 +49,6 @@ public class EventTreeGenerator extends EventTree {
 
                 Edge edge = Edge.createForCompare(linkedVertexes.get(i), linkedVertexes.get(j));
                 if (!edges.contains(edge)) {
-                    System.out.println("HASH: " + edge + ", " + edges);
                     putLinkedIndexes(linkedVertexes.get(i), linkedVertexes.get(j));
                 }
             }
@@ -75,8 +85,13 @@ public class EventTreeGenerator extends EventTree {
         availableList1.remove(end);
         List<Vertex> availableList2 = availableVertexes.get(end);
         availableList2.remove(start);
-        vacuumCompletedVertexes(start);
-        vacuumCompletedVertexes(end);
+        if (availableList1.isEmpty()) {
+            vacuumCompletedVertexes(start);
+        }
+        if (availableList2.isEmpty()) {
+            vacuumCompletedVertexes(end);
+        }
+        System.out.println("available: " + availableVertexes);
     }
 
     /**
@@ -102,7 +117,9 @@ public class EventTreeGenerator extends EventTree {
 
     private boolean handleMaxDegree(Vertex vertex) {
         if (vertex.getDegree() == maxDegree) {
-            availableVertexes.remove(vertex);
+            linkedVertexes.remove(vertex);
+            cleaning();
+            deleteLinkedElement(vertex);
             System.out.println("OH NO! MAX DEGREE! CLEAN VERTEX " + vertex);
             vacuumCompletedVertexes(vertex);
             System.out.println("AFTER CLEANING: " + availableVertexes);

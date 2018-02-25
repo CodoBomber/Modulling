@@ -1,4 +1,3 @@
-import events.EventTree;
 import generators.EventTreeGenerator;
 
 public class Application {
@@ -23,9 +22,10 @@ public class Application {
         eventTree.printEdges();
         eventTree.printMaxDegreeVertexes();*/
 
-        EventTreeGenerator etg = new EventTreeGenerator(4, 6, 3);
+        EventTreeGenerator etg = new EventTreeGenerator(7, 10, 3);
         etg.generate();
-//        etg.printEdges();
+        System.out.println("###################EDGES#####################");
+        etg.printEdges();
     }
 
 }

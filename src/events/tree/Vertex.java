@@ -36,9 +36,7 @@ public class Vertex implements Cloneable {
         if (o == null || getClass() != o.getClass()) return false;
 
         Vertex vertex = (Vertex) o;
-
-        if (id != vertex.id) return false;
-        return degree == vertex.degree;
+        return id == vertex.id;
     }
 
     @Override
