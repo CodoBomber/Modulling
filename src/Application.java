@@ -1,9 +1,13 @@
-import generators.EventTreeGenerator;
+import events.MarkovChain;
+import generators.markov.RowBasedGenerator;
 
 public class Application {
 
     public static void main(String[] args) {
-        /*PVSGenerator pvs = new PVSGenerator(10);
+        // ************************LAB 1*********************************//
+        //PVSGenerator pvs = new PVSGenerator(10);
+        // ************************LAB 2*********************************//
+        /*
         ImmutablePicking ip = new ImmutablePicking(pvs);
         MutablePicking mp = new MutablePicking(pvs);
         pvs.prettyPrint();
@@ -17,15 +21,23 @@ public class Application {
         mp.pick(9, 10000);
         System.out.println("$");*/
 
+        // ************************LAB 3*********************************//
         /*EventTree eventTree = new EventTree(6, 3);
         eventTree.buildTree();
         eventTree.printEdges();
         eventTree.printMaxDegreeVertexes();*/
 
-        EventTreeGenerator etg = new EventTreeGenerator(4, 6, 2);
+        // ************************LAB 4*********************************//
+
+     /*   EventTreeGenerator etg = new EventTreeGenerator(4, 6, 2);
         etg.generate();
         System.out.println("###################EDGES#####################");
-        etg.printEdges();
+        etg.printEdges();*/
+
+        // ************************LAB 5*********************************//
+        MarkovChain chain = new MarkovChain(new RowBasedGenerator(5));
+        chain.multiply();
+        chain.prettyPrint();
     }
 
 }

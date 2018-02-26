@@ -1,4 +1,6 @@
-package generators;
+package algorithms;
+
+import generators.PVSGenerator;
 
 import java.util.concurrent.ThreadLocalRandom;
 

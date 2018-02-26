@@ -21,7 +21,7 @@ public class PVSGenerator {
     public PVSGenerator(int size) {
         this.size = size;
         this.P = new ArrayList<>(
-                Collections.nCopies(size, 0.1f)
+                Collections.nCopies(size, (float) 1 / size)
         );
         randomizeProbability();
         this.values = IntStream.rangeClosed(1, size)
@@ -119,7 +119,7 @@ public class PVSGenerator {
     }
 
     /*数字の居場所を探してくれるファンクション*/
-    private int findFirstOccurrence(float pick) {
+    public int findFirstOccurrence(float pick) {
         return Collections.binarySearch(S, pick) * -1 - 1;
     }
 
@@ -133,6 +133,12 @@ public class PVSGenerator {
         removeFromTail();
         S = calculateCumulativeSum();
         return value;
+    }
+
+    public Float[] toArray() {
+        Float[] result = new Float[size];
+        P.toArray(result);
+        return result;
     }
 
     private void removeFromTail() {
