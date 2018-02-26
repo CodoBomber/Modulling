@@ -30,17 +30,19 @@ public class Application {
 
         // ************************LAB 4*********************************//
 
-     /*   EventTreeGenerator etg = new EventTreeGenerator(4, 6, 2);
+        /*EventTreeGenerator etg = new EventTreeGenerator(5, 6, 3);
         etg.generate();
         System.out.println("###################EDGES#####################");
         etg.printEdges();*/
 
         // ************************LAB 5*********************************//
         MarkovChain chain = new MarkovChain(new RowBasedGenerator(5));
+        chain.prettyPrint();
         chain.multiply();
         chain.prettyPrint();
 
         MarkovChain chain2 = new MarkovChain(new TwoStochasticGenerator(4));
+        chain2.prettyPrint();
         chain2.multiply();
         chain2.prettyPrint();
 
