@@ -1,5 +1,6 @@
 import events.MarkovChain;
 import generators.markov.RowBasedGenerator;
+import generators.markov.TwoStochasticGenerator;
 
 public class Application {
 
@@ -38,6 +39,11 @@ public class Application {
         MarkovChain chain = new MarkovChain(new RowBasedGenerator(5));
         chain.multiply();
         chain.prettyPrint();
+
+        MarkovChain chain2 = new MarkovChain(new TwoStochasticGenerator(4));
+        chain2.multiply();
+        chain2.prettyPrint();
+
     }
 
 }

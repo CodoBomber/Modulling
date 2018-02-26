@@ -24,12 +24,28 @@ public class PVSGenerator {
                 Collections.nCopies(size, (float) 1 / size)
         );
         randomizeProbability();
-        this.values = IntStream.rangeClosed(1, size)
-                .boxed()
-                .collect(Collectors.toList());
+        generateRandomValues();
         this.S = calculateCumulativeSum();
         this.backup = new PVSGenerator(this);
 //        mapSumOnValues();
+    }
+
+    private void generateRandomValues() {
+        this.values = IntStream.rangeClosed(1, size)
+                .boxed()
+                .collect(Collectors.toList());
+    }
+
+    //正直、いらないコンストラクターですが、ラボ５のために一応作りました。
+    public PVSGenerator(float[] P) {
+        this.P = new ArrayList<>();
+        for (int i = 0; i < P.length; i++) {
+            this.P.add(P[i]);
+        }
+        this.size = this.P.size();
+        generateRandomValues();
+        this.S = calculateCumulativeSum();
+        this.backup = new PVSGenerator(this);
     }
 
     public PVSGenerator(List<Float> P, List<Integer> values, List<Float> S) {
