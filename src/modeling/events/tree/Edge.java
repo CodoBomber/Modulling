@@ -1,4 +1,4 @@
-package events.tree;
+package modeling.events.tree;
 
 public class Edge {
 

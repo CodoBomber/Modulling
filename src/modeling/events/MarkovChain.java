@@ -1,6 +1,6 @@
-package events;
+package modeling.events;
 
-import generators.markov.MarkovChainGenerator;
+import modeling.generators.markov.MarkovChainGenerator;
 
 import java.util.Arrays;
 

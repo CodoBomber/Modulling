@@ -1,4 +1,4 @@
-package generators;
+package modeling.generators;
 
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;

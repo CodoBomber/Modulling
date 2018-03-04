@@ -1,7 +1,7 @@
-package events;
+package modeling.events;
 
-import events.tree.Edge;
-import events.tree.Vertex;
+import modeling.events.tree.Edge;
+import modeling.events.tree.Vertex;
 
 import java.util.ArrayList;
 import java.util.Collections;

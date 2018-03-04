@@ -1,6 +1,6 @@
-package algorithms;
+package modeling.algorithms;
 
-import generators.PVSGenerator;
+import modeling.generators.PVSGenerator;
 
 import java.util.concurrent.ThreadLocalRandom;
 

@@ -1,6 +1,6 @@
-package generators.markov;
+package modeling.generators.markov;
 
-import generators.PVSGenerator;
+import modeling.generators.PVSGenerator;
 
 import java.util.concurrent.ThreadLocalRandom;
 

@@ -1,8 +1,8 @@
-package generators;
+package modeling.generators;
 
-import events.EventTree;
-import events.tree.Edge;
-import events.tree.Vertex;
+import modeling.events.EventTree;
+import modeling.events.tree.Edge;
+import modeling.events.tree.Vertex;
 
 import java.util.ArrayList;
 import java.util.HashMap;

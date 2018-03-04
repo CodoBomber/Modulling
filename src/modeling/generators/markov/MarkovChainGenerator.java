@@ -1,4 +1,4 @@
-package generators.markov;
+package modeling.generators.markov;
 
 public interface MarkovChainGenerator {
 

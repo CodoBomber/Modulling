@@ -1,6 +1,8 @@
-import events.MarkovChain;
-import generators.markov.RowBasedGenerator;
-import generators.markov.TwoStochasticGenerator;
+package modeling;
+
+import modeling.events.MarkovChain;
+import modeling.generators.markov.RowBasedGenerator;
+import modeling.generators.markov.TwoStochasticGenerator;
 
 public class Application {
 
