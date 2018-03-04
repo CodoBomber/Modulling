@@ -86,6 +86,7 @@ public class EventTree {
     private void initializeRoot() {
         Vertex root = getRandomLeafVertex();
         Vertex child = getRandomLeafVertex();
+        System.out.println("ROOT VERTEX: " + root);
         link(root, child);
         linkedVertexes.add(root);
         linkedVertexes.add(child);

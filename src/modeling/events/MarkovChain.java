@@ -43,12 +43,14 @@ public class MarkovChain {
     }
 
     public void prettyPrint() {
+        System.out.println("##########START MATRIX#############");
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
                 System.out.print(chain[i][j] + " ");
             }
             System.out.println();
         }
+        System.out.println("##########END MATRIX#############");
     }
 
 }
