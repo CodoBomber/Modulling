@@ -1,8 +1,9 @@
 package modeling;
 
-import modeling.events.MarkovChain;
-import modeling.generators.markov.RowBasedGenerator;
-import modeling.generators.markov.TwoStochasticGenerator;
+import modeling.generators.distribution.ConstantDistribution;
+import modeling.generators.distribution.Distribution;
+import modeling.generators.distribution.ExponentialDistribution;
+import modeling.generators.distribution.UniformDistribution;
 
 public class Application {
 
@@ -38,7 +39,7 @@ public class Application {
         etg.printEdges();*/
 
         // ************************LAB 5*********************************//
-        MarkovChain chain = new MarkovChain(new RowBasedGenerator(5));
+        /*MarkovChain chain = new MarkovChain(new RowBasedGenerator(5));
         chain.prettyPrint();
         chain.multiply();
         chain.prettyPrint();
@@ -46,8 +47,24 @@ public class Application {
         MarkovChain chain2 = new MarkovChain(new TwoStochasticGenerator(4));
         chain2.prettyPrint();
         chain2.multiply();
-        chain2.prettyPrint();
+        chain2.prettyPrint();*/
+        // ************************LAB 6*********************************//
+        double expectedValue = 1.7;
+        Distribution constant = new ConstantDistribution(expectedValue);
+        Distribution uniform = new UniformDistribution(expectedValue);
+        Distribution exponential = new ExponentialDistribution(expectedValue);
+        double expectedValue2 = 1.9;
+        Distribution constant2 = new ConstantDistribution(expectedValue2);
+        Distribution uniform2 = new UniformDistribution(expectedValue2);
+        Distribution exponential2 = new ExponentialDistribution(expectedValue2);
 
+        System.out.println("Const: " + constant.getNextValue());
+        System.out.println("Uniform: " + uniform.getNextValue());
+        System.out.println("Expo: " + exponential.getNextValue());
+
+        System.out.println("Const: " + constant2.getNextValue());
+        System.out.println("Uniform: " + uniform2.getNextValue());
+        System.out.println("Expo: " + exponential2.getNextValue());
     }
 
 }
