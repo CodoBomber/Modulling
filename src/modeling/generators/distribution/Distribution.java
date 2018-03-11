@@ -13,4 +13,6 @@ public abstract class Distribution {
 
     public abstract double getNextValue();
 
+    public abstract String getDistributionName();
+
 }

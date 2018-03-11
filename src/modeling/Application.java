@@ -1,5 +1,6 @@
 package modeling;
 
+import modeling.events.queueing.QueuingSystem;
 import modeling.generators.distribution.ConstantDistribution;
 import modeling.generators.distribution.Distribution;
 import modeling.generators.distribution.ExponentialDistribution;
@@ -49,6 +50,7 @@ public class Application {
         chain2.multiply();
         chain2.prettyPrint();*/
         // ************************LAB 6*********************************//
+        //expected1 and expected2 make difference on 10%
         double expectedValue = 1.7;
         Distribution constant = new ConstantDistribution(expectedValue);
         Distribution uniform = new UniformDistribution(expectedValue);
@@ -57,14 +59,15 @@ public class Application {
         Distribution constant2 = new ConstantDistribution(expectedValue2);
         Distribution uniform2 = new UniformDistribution(expectedValue2);
         Distribution exponential2 = new ExponentialDistribution(expectedValue2);
-
-        System.out.println("Const: " + constant.getNextValue());
+        QueuingSystem queuingSystem = new QueuingSystem(uniform2, uniform, 3);
+        /// debug code ahead!
+/*        System.out.println("Const: " + constant.getNextValue());
         System.out.println("Uniform: " + uniform.getNextValue());
         System.out.println("Expo: " + exponential.getNextValue());
 
         System.out.println("Const: " + constant2.getNextValue());
         System.out.println("Uniform: " + uniform2.getNextValue());
-        System.out.println("Expo: " + exponential2.getNextValue());
+        System.out.println("Expo: " + exponential2.getNextValue());*/
     }
 
 }

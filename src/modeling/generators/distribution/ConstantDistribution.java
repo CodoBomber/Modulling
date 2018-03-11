@@ -11,4 +11,9 @@ public class ConstantDistribution extends Distribution {
     public double getNextValue() {
         return expectedValue;
     }
+
+    @Override
+    public String getDistributionName() {
+        return this.getClass().getSimpleName();
+    }
 }

@@ -29,4 +29,9 @@ public class UniformDistribution extends Distribution {
     public double getNextValue() {
         return random.nextDouble(leftBound, rightBound);
     }
+
+    @Override
+    public String getDistributionName() {
+        return getClass().getSimpleName();
+    }
 }
