@@ -8,6 +8,11 @@ public class ArrivalEvent extends Event {
 
     @Override
     protected void handle(QueuingSystem context) {
+        context.addToQueue(getClient());
+    }
 
+    @Override
+    public int hashCode() {
+        return 1;
     }
 }

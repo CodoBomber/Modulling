@@ -22,6 +22,9 @@ public abstract class Event implements Comparable<Event> {
 
     @Override
     public int compareTo(Event o) {
-        return Double.compare(this.time, o.time);
+        int compare = Double.compare(this.time, o.time);
+        return compare == 0
+                ? Integer.compare(this.hashCode(), o.hashCode())
+                : compare;
     }
 }

@@ -35,6 +35,11 @@ public class Client implements Comparable<Client> {
 
     @Override
     public int compareTo(Client o) {
-        return Integer.compare(subjectId, o.subjectId);
+        return Double.compare(arrivalTime, o.getArrivalTime());
+    }
+
+    @Override
+    public String toString() {
+        return "Client #" + String.valueOf(subjectId);
     }
 }

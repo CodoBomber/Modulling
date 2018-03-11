@@ -59,8 +59,8 @@ public class Application {
         Distribution constant2 = new ConstantDistribution(expectedValue2);
         Distribution uniform2 = new UniformDistribution(expectedValue2);
         Distribution exponential2 = new ExponentialDistribution(expectedValue2);
-        QueuingSystem queuingSystem = new QueuingSystem(uniform2, uniform, 3);
-        /// debug code ahead!
+        QueuingSystem queuingSystem = new QueuingSystem(uniform2, uniform, 10000);
+        queuingSystem.simulate();
 /*        System.out.println("Const: " + constant.getNextValue());
         System.out.println("Uniform: " + uniform.getNextValue());
         System.out.println("Expo: " + exponential.getNextValue());

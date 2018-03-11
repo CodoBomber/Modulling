@@ -8,6 +8,11 @@ public class QueuingEvent extends Event {
 
     @Override
     protected void handle(QueuingSystem context) {
+        context.pollFromQueue();
+    }
 
+    @Override
+    public int hashCode() {
+        return 3;
     }
 }

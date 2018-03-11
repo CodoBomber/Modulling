@@ -11,9 +11,16 @@ public class LeavingEvent extends Event {
 
     @Override
     protected void handle(QueuingSystem context) {
-        System.out.println(
-                "Клиент №" + getClient().getSubjectId() + " прошёл обслуживание за "
-                + (getClient().getLeftTime() - getClient().getQueuingTime() - getClient().getArrivalTime())
-        );
+        /*System.out.print(
+                "Клиент №" + getClient().getSubjectId() + " простоял в очереди: ");*/
+        double queuingTime = getClient().getLeftTime() - getClient().getQueuingTime() - getClient().getArrivalTime();
+//        if (queuingTime <= 0.0000001) { return; }
+        System.out.format("%.5f", queuingTime);
+        System.out.println();
+    }
+
+    @Override
+    public int hashCode() {
+        return 2;
     }
 }
