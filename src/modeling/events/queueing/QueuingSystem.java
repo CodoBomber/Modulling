@@ -15,36 +15,44 @@ public class QueuingSystem {
     private TreeSet<Event> events = new TreeSet<>();
     private TreeSet<Client> clients = new TreeSet<>();
     private Queue<Client> queue = new LinkedList<>();
+    private double maxQueuedTime = 0d;
 
     public QueuingSystem(Distribution arrival, Distribution queuing, int size) {
         this.size = size;
         this.arrival = arrival;
         this.queuing = queuing;
-        System.out.println("ARRIVAL METHOD: " + arrival.getDistributionName());
-        System.out.println("QUEUING METHOD: " + queuing.getDistributionName());
+//        System.out.println("ARRIVAL METHOD: " + arrival.getDistributionName());
+//        System.out.println("QUEUING METHOD: " + queuing.getDistributionName());
         generateEventTime();
     }
 
     private void generateEventTime() {
-        IntStream.rangeClosed(0, size).forEach(this::generateClients);
-        clients.forEach(this::generateEvents);
+        IntStream.range(0, size).forEach(this::generateClients);
+        for (Client client : clients) {
+            generateEvents(client);
+        }
+//        clients.forEach(this::generateEvents);
     }
 
     private void generateClients(int subjectId) {
-        Client previous;
         Client client = new Client(subjectId, arrival.getNextValue(), queuing.getNextValue());
-        previous = clients.lower(client);
-        double leavingTime = previous == null
-                ? client.getArrivalTime() + client.getQueuingTime()
-                : previous.getLeftTime() + client.getQueuingTime();
-        client.setLeftTime(leavingTime);
         clients.add(client);
         events.add(new ArrivalEvent(client, client.getArrivalTime()));
     }
 
     private void generateEvents(Client client) {
+//        client.printInformation();
         Client previous = clients.lower(client);
-        events.add(new QueuingEvent(client, previous == null ? client.getArrivalTime() : previous.getLeftTime()));
+        double readyToProcess, leavingTime;
+        if (previous == null) {
+            leavingTime = client.getArrivalTime() + client.getQueuingTime();
+            readyToProcess = client.getArrivalTime();
+        } else {
+            readyToProcess = Math.max(previous.getLeftTime(), client.getArrivalTime());
+            leavingTime = readyToProcess + client.getQueuingTime();
+        }
+        client.setLeftTime(leavingTime);
+        events.add(new QueuingEvent(client, readyToProcess));
         events.add(new LeavingEvent(client, client.getLeftTime()));
     }
 
@@ -53,10 +61,15 @@ public class QueuingSystem {
             e.handle(this);
             printCurrentState(e);
         });
+        System.out.println("Max queued time: " +  maxQueuedTime);
+    }
+
+    public void setMaxQueuedTime(double maxQueuedTime) {
+        this.maxQueuedTime = this.maxQueuedTime > maxQueuedTime ? this.maxQueuedTime : maxQueuedTime;
     }
 
     private void printCurrentState(Event event) {
-        if (true) { return; }
+//        if (true) { return; }
         System.out.println("TIME:" + event.getTime());
         System.out.println("CURRENT EVENT IS: " + event.getClass().getSimpleName());
         System.out.println("CURRENT CLIENT IS: " + event.getClient());

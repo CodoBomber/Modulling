@@ -38,6 +38,13 @@ public class Client implements Comparable<Client> {
         return Double.compare(arrivalTime, o.getArrivalTime());
     }
 
+    void printInformation() {
+        System.out.println(toString());
+        System.out.println("Arrival: " + getArrivalTime());
+        System.out.println("Processing: " + getQueuingTime());
+        System.out.println("Leaving: " + getLeftTime());
+    }
+
     @Override
     public String toString() {
         return "Client #" + String.valueOf(subjectId);

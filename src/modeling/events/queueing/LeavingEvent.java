@@ -15,6 +15,7 @@ public class LeavingEvent extends Event {
                 "Клиент №" + getClient().getSubjectId() + " простоял в очереди: ");*/
         double queuingTime = getClient().getLeftTime() - getClient().getQueuingTime() - getClient().getArrivalTime();
 //        if (queuingTime <= 0.0000001) { return; }
+        context.setMaxQueuedTime(queuingTime);
         System.out.format("%.5f", queuingTime);
         System.out.println();
     }
