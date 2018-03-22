@@ -3,7 +3,7 @@ package modeling.events.queueing;
 public class Client implements Comparable<Client> {
 
     private final int subjectId;
-    private final double arrivalTime;
+    private double arrivalTime;
     private final double queuingTime;
     private double leftTime;
 
@@ -15,6 +15,10 @@ public class Client implements Comparable<Client> {
 
     public void setLeftTime(double leftTime) {
         this.leftTime = leftTime;
+    }
+
+    public void setArrivalTime(double arrivalTime) {
+        this.arrivalTime = arrivalTime;
     }
 
     public int getSubjectId() {

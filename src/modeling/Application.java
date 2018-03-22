@@ -59,16 +59,16 @@ public class Application {
         Distribution constant2 = new ConstantDistribution(expectedValue2);
         Distribution uniform2 = new UniformDistribution(expectedValue2);
         Distribution exponential2 = new ExponentialDistribution(expectedValue2);
-        /*QueuingSystem constuni = new QueuingSystem(constant2, uniform, 10_000);
-        QueuingSystem uniuni = new QueuingSystem(uniform2, uniform, 10_000);
+//        QueuingSystem constuni = new QueuingSystem(constant2, uniform, 10_000);
+//        QueuingSystem uniuni = new QueuingSystem(uniform2, uniform, 10_000);
         QueuingSystem expouni = new QueuingSystem(exponential2, uniform, 10_000);
-        QueuingSystem constexpo = new QueuingSystem(constant2, exponential, 10_000);
-        QueuingSystem uniexpo = new QueuingSystem(uniform2, exponential, 10_000);
-        QueuingSystem expoexpo = new QueuingSystem(exponential2, exponential, 10_000);
-        QueuingSystem uniconst = new QueuingSystem(uniform2, constant, 10_000);*/
-        QueuingSystem expoconst = new QueuingSystem(exponential2, constant, /*10_000*/ 100);
+//        QueuingSystem constexpo = new QueuingSystem(constant2, exponential, 10_000);
+//        QueuingSystem uniexpo = new QueuingSystem(uniform2, exponential, 10_000);
+//        QueuingSystem expoexpo = new QueuingSystem(exponential2, exponential, 10_000);
+//        QueuingSystem uniconst = new QueuingSystem(uniform2, constant, 10_000);
+//        QueuingSystem expoconst = new QueuingSystem(exponential2, constant, 10_000);
 
-        expoconst.simulate();
+        expouni.simulate();
 /*        System.out.println("Const: " + constant.getNextValue());
         System.out.println("Uniform: " + uniform.getNextValue());
         System.out.println("Expo: " + exponential.getNextValue());
