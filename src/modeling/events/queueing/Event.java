@@ -2,19 +2,13 @@ package modeling.events.queueing;
 
 public abstract class Event implements Comparable<Event> {
 
-    private final Client client;
     private final double time;
 
-    public Event(Client client, double time) {
-        this.client = client;
+    public Event(double time) {
         this.time = time;
     }
 
     protected abstract void handle(QueuingSystem context);
-
-    public Client getClient() {
-        return client;
-    }
 
     public double getTime() {
         return time;
@@ -27,4 +21,6 @@ public abstract class Event implements Comparable<Event> {
                 ? Integer.compare(this.hashCode(), o.hashCode())
                 : compare;
     }
+
+    public abstract Subject getSubject();
 }

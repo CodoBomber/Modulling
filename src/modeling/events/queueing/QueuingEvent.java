@@ -2,13 +2,21 @@ package modeling.events.queueing;
 
 public class QueuingEvent extends Event {
 
-    QueuingEvent(Client client, double time) {
-        super(client, time);
+    private final Subject subject;
+
+    QueuingEvent(Subject subject, double time) {
+        super(time);
+        this.subject = subject;
     }
 
     @Override
     protected void handle(QueuingSystem context) {
         context.pollFromQueue();
+    }
+
+    @Override
+    public Subject getSubject() {
+        return subject;
     }
 
     @Override

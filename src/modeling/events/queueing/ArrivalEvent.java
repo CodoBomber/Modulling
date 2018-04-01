@@ -2,13 +2,21 @@ package modeling.events.queueing;
 
 public class ArrivalEvent extends Event {
 
-    ArrivalEvent(Client client, double time) {
-        super(client, time);
+    private final Subject subject;
+
+    ArrivalEvent(Subject subject, double time) {
+        super(time);
+        this.subject = subject;
     }
 
     @Override
     protected void handle(QueuingSystem context) {
-        context.addToQueue(getClient());
+        context.addToQueue(subject);
+    }
+
+    @Override
+    public Subject getSubject() {
+        return subject;
     }
 
     @Override

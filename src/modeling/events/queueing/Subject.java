@@ -1,13 +1,23 @@
+
 package modeling.events.queueing;
 
-public class Client implements Comparable<Client> {
+public class Subject implements Comparable<Subject> {
 
     private final int subjectId;
-    private double arrivalTime;
+    /**
+     * Время когда придёт
+     */
+    private final double arrivalTime;
+    /**
+     * Время, сколько будет обрабатываться
+     */
     private final double queuingTime;
+    /**
+     * Время когда уйдёт
+     */
     private double leftTime;
 
-    public Client(int subjectId, double arrivalTime, double queuingTime) {
+    public Subject(int subjectId, double arrivalTime, double queuingTime) {
         this.subjectId = subjectId;
         this.arrivalTime = arrivalTime;
         this.queuingTime = queuingTime;
@@ -15,10 +25,6 @@ public class Client implements Comparable<Client> {
 
     public void setLeftTime(double leftTime) {
         this.leftTime = leftTime;
-    }
-
-    public void setArrivalTime(double arrivalTime) {
-        this.arrivalTime = arrivalTime;
     }
 
     public int getSubjectId() {
@@ -38,7 +44,7 @@ public class Client implements Comparable<Client> {
     }
 
     @Override
-    public int compareTo(Client o) {
+    public int compareTo(Subject o) {
         return Double.compare(arrivalTime, o.getArrivalTime());
     }
 
@@ -51,6 +57,6 @@ public class Client implements Comparable<Client> {
 
     @Override
     public String toString() {
-        return "Client #" + String.valueOf(subjectId);
+        return "Subject #" + String.valueOf(subjectId);
     }
 }
