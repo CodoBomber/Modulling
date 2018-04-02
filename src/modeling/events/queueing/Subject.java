@@ -48,7 +48,7 @@ public class Subject implements Comparable<Subject> {
         return Double.compare(arrivalTime, o.getArrivalTime());
     }
 
-    void printInformation() {
+    public void printInformation() {
         System.out.println(toString());
         System.out.println("Arrival: " + getArrivalTime());
         System.out.println("Processing: " + getQueuingTime());

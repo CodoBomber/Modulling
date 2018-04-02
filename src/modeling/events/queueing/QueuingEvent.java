@@ -1,6 +1,6 @@
 package modeling.events.queueing;
 
-public class QueuingEvent extends Event {
+class QueuingEvent extends Event {
 
     private final Subject subject;
 

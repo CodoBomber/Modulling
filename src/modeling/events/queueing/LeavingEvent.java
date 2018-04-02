@@ -3,7 +3,7 @@ package modeling.events.queueing;
 /**
  *ただ客の正確な情報をスクリーンに表示しますだけのクラスです。
  */
-public class LeavingEvent extends Event {
+class LeavingEvent extends Event {
 
     private final Subject subject;
 

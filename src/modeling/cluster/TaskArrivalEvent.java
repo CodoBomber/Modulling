@@ -4,7 +4,7 @@ import modeling.events.queueing.Event;
 import modeling.events.queueing.QueuingSystem;
 import modeling.events.queueing.Subject;
 
-public class TaskArrivalEvent extends Event {
+class TaskArrivalEvent extends Event {
 
     private final Task task;
 
@@ -21,5 +21,10 @@ public class TaskArrivalEvent extends Event {
     @Override
     public Subject getSubject() {
         return task;
+    }
+
+    @Override
+    public int hashCode() {
+        return 1;
     }
 }

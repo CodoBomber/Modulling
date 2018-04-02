@@ -10,4 +10,6 @@ public interface QueuingSystem {
 
     boolean isQueueEmpty();
 
+    void simulate();
+
 }
