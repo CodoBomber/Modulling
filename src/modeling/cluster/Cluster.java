@@ -17,4 +17,8 @@ public class Cluster {
     public int getCoresNumber() {
         return coresNumber;
     }
+
+    public boolean isSuitable(Task task) {
+        return this.getCoresNumber() >= task.getCoresNumber() && this.getMemoryChunks() >= task.getMemoryChunks();
+    }
 }

@@ -5,7 +5,9 @@ import modeling.events.queueing.QueuingSystem;
 import modeling.events.queueing.Subject;
 import modeling.generators.distribution.Distribution;
 
+import java.util.LinkedList;
 import java.util.NoSuchElementException;
+import java.util.Queue;
 import java.util.TreeSet;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.IntStream;
@@ -19,6 +21,7 @@ public class ClusterQueuingSystem implements QueuingSystem {
     private final int size;
     private final Cluster cluster;
     private final ThreadLocalRandom random = ThreadLocalRandom.current();
+    private final Queue<Task> taskPool;
 
     public ClusterQueuingSystem(Cluster cluster,
                                 Distribution arrivalDistribution,
@@ -31,7 +34,9 @@ public class ClusterQueuingSystem implements QueuingSystem {
         this.executionDistribution = executionDistribution;
         this.eventCalendar = new TreeSet<>();
         this.size = size;
+        this.taskPool = new LinkedList<>();
         createTaskArrivalEvents();
+        initializeTaskEvents();
         prettyPrint();
     }
 
@@ -61,7 +66,9 @@ public class ClusterQueuingSystem implements QueuingSystem {
                 random.nextInt(1, cluster.getCoresNumber()),
                 maxPassTime
         );
-//        tasksLi.add(subject);
+
+        taskPool.add(task);
+
         double previousArrive = 0;
         try {
             //100% arrival events guarantee
@@ -70,6 +77,17 @@ public class ClusterQueuingSystem implements QueuingSystem {
         } catch (NoSuchElementException ignore) {}
 
         eventCalendar.add(new TaskArrivalEvent(task, task.getArrivalTime() + previousArrive));
+    }
+
+    private void initializeTaskEvents() {
+        taskPool.forEach(
+                task -> {
+                    if (cluster.isSuitable(task)) {
+                        eventCalendar.add(new TaskExecutionEvent(task, task.getArrivalTime()));
+                        taskPool.poll();
+                    }
+                }
+        );
     }
 
     @Override

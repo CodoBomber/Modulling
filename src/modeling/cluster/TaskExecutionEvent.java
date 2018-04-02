@@ -4,11 +4,11 @@ import modeling.events.queueing.Event;
 import modeling.events.queueing.QueuingSystem;
 import modeling.events.queueing.Subject;
 
-class TaskQueuingEvent extends Event {
+class TaskExecutionEvent extends Event {
 
     private final Task task;
 
-    public TaskQueuingEvent(Task task, double time) {
+    public TaskExecutionEvent(Task task, double time) {
         super(time);
         this.task = task;
     }
