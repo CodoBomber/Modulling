@@ -13,12 +13,12 @@ class LeavingEvent extends Event {
     }
 
     @Override
-    protected void handle(QueuingSystem context) {
+    public void handle(QueuingSystem context) {
         /*System.out.print(
                 "Клиент №" + getClient().getSubjectId() + " простоял в очереди: ");*/
-        double queuingTime = subject.getLeftTime() - subject.getQueuingTime() - subject.getArrivalTime();
+//        double queuingTime = subject.getLeftTime() - subject.getExecutionTime() - subject.getArrivalPause();
 //        if (queuingTime <= 0.0000001) { return; }
-        context.setSum(queuingTime);
+//        context.setSum(queuingTime);
 //        System.out.format("%.5f", queuingTime);
         System.out.println();
     }

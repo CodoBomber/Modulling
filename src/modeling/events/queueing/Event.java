@@ -8,7 +8,7 @@ public abstract class Event implements Comparable<Event> {
         this.time = time;
     }
 
-    protected abstract void handle(QueuingSystem context);
+    public abstract void handle(QueuingSystem context);
 
     public double getTime() {
         return time;

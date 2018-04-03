@@ -14,6 +14,7 @@ import java.util.stream.IntStream;
 
 public class ClusterQueuingSystem implements QueuingSystem {
 
+    private double currentTime;
     private final double maxPassTime;
     private final Distribution arrivalDistribution;
     private final Distribution executionDistribution;
@@ -23,21 +24,19 @@ public class ClusterQueuingSystem implements QueuingSystem {
     private final ThreadLocalRandom random = ThreadLocalRandom.current();
     private final Queue<Task> taskPool;
 
-    public ClusterQueuingSystem(Cluster cluster,
+    public ClusterQueuingSystem(int memoryChunks,
+                                int coresNumber,
                                 Distribution arrivalDistribution,
                                 Distribution executionDistribution,
                                 double maxPassTime,
                                 int size) {
-        this.cluster = cluster;
+        this.cluster = new Cluster(memoryChunks, coresNumber);
         this.maxPassTime = maxPassTime;
         this.arrivalDistribution = arrivalDistribution;
         this.executionDistribution = executionDistribution;
         this.eventCalendar = new TreeSet<>();
         this.size = size;
         this.taskPool = new LinkedList<>();
-        createTaskArrivalEvents();
-        initializeTaskEvents();
-        prettyPrint();
     }
 
     private void prettyPrint() {
@@ -75,19 +74,23 @@ public class ClusterQueuingSystem implements QueuingSystem {
             previousArrive = eventCalendar.last()
                                           .getTime();
         } catch (NoSuchElementException ignore) {}
-
-        eventCalendar.add(new TaskArrivalEvent(task, task.getArrivalTime() + previousArrive));
+        TaskArrivalEvent arrivalEvent = new TaskArrivalEvent(
+                task,
+                task.getArrivalPause() + previousArrive
+        );
+        eventCalendar.add(arrivalEvent);
+        task.setArrivalEvent(arrivalEvent);
     }
 
-    private void initializeTaskEvents() {
-        taskPool.forEach(
-                task -> {
-                    if (cluster.isSuitable(task)) {
-                        eventCalendar.add(new TaskExecutionEvent(task, task.getArrivalTime()));
-                        taskPool.poll();
-                    }
-                }
-        );
+    private void executeSuitableTasks() {
+        for (Task task = taskPool.peek(); cluster.isSuitable(task); task = taskPool.peek()) {
+            execute(task);
+            taskPool.poll();
+        }
+    }
+
+    private void execute(Task task) {
+
     }
 
     @Override
@@ -107,6 +110,9 @@ public class ClusterQueuingSystem implements QueuingSystem {
 
     @Override
     public void simulate() {
-
+        createTaskArrivalEvents();
+        eventCalendar.forEach(event -> {
+            event.handle(this);
+        });
     }
 }

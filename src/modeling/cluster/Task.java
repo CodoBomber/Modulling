@@ -7,12 +7,9 @@ public class Task extends Subject {
     private final int memoryChunks;
     private final int coresNumber;
     private final double passTime;
-    //arrival event
-    //execution event
-    //leaving event
 
     public Task(Subject subject, int memoryChunks, int coresNumber, double passTime) {
-        super(subject.getSubjectId(), subject.getArrivalTime(), subject.getQueuingTime());
+        super(subject.getSubjectId(), subject.getArrivalPause(), subject.getExecutionTime());
         this.memoryChunks = memoryChunks;
         this.coresNumber = coresNumber;
         this.passTime = passTime;

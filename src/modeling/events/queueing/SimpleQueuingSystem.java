@@ -38,7 +38,7 @@ public class SimpleQueuingSystem implements QueuingSystem {
     private void generateClients(int subjectId) {
         Subject subject = new Subject(subjectId, arrival.getNextValue(), queuing.getNextValue());
         subjects.add(subject);
-        events.add(new ArrivalEvent(subject, subject.getArrivalTime()));
+        events.add(new ArrivalEvent(subject, subject.getArrivalPause()));
     }
 
     private void generateEvents(Subject subject) {
@@ -46,15 +46,15 @@ public class SimpleQueuingSystem implements QueuingSystem {
         Subject previous = subjects.lower(subject);
         double readyToProcess, leavingTime;
         if (previous == null) {
-            leavingTime = subject.getArrivalTime() + subject.getQueuingTime();
-            readyToProcess = subject.getArrivalTime();
+            leavingTime = subject.getArrivalPause() + subject.getExecutionTime();
+            readyToProcess = subject.getArrivalPause();
         } else {
-            readyToProcess = Math.max(previous.getLeftTime(), subject.getArrivalTime());
-            leavingTime = readyToProcess + subject.getQueuingTime();
+//            readyToProcess = Math.max(previous.getLeftTime(), subject.getArrivalPause());
+//            leavingTime = readyToProcess + subject.getExecutionTime();
         }
-        subject.setLeftTime(leavingTime);
-        events.add(new QueuingEvent(subject, readyToProcess));
-        events.add(new LeavingEvent(subject, subject.getLeftTime()));
+//        subject.setLeftTime(leavingTime);
+//        events.add(new QueuingEvent(subject, readyToProcess));
+//        events.add(new LeavingEvent(subject, subject.getLeftTime()));
     }
 
     public void simulate() {

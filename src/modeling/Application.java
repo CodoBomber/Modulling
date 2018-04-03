@@ -1,6 +1,5 @@
 package modeling;
 
-import modeling.cluster.Cluster;
 import modeling.cluster.ClusterQueuingSystem;
 import modeling.generators.distribution.Distribution;
 import modeling.generators.distribution.ExponentialDistribution;
@@ -15,14 +14,14 @@ public class Application {
         Distribution executionDistribution = new ExponentialDistribution(executionExpectedValue);
 
         //2 < maxPassTime < 20
-        Cluster cluster = new Cluster(512, 256);
-        ClusterQueuingSystem system = new ClusterQueuingSystem(
-                cluster,
+        new ClusterQueuingSystem(
+                512,
+                256,
                 arrivalDistribution,
                 executionDistribution,
                 10d,
                 3
-        );
+        ).simulate();
 
 
     }

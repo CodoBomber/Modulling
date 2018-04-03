@@ -4,12 +4,11 @@ public interface QueuingSystem {
 
     default void setSum(double sum) {}
 
-    boolean addToQueue(Subject subject);
+    default boolean addToQueue(Subject subject) {return false;}
 
     boolean pollFromQueue();
 
     boolean isQueueEmpty();
 
     void simulate();
-
 }
