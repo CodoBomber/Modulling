@@ -8,7 +8,7 @@ import modeling.generators.distribution.Distribution;
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
 import java.util.Queue;
-import java.util.TreeSet;
+import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.IntStream;
 
@@ -18,7 +18,7 @@ public class ClusterQueuingSystem implements QueuingSystem {
     private final double maxPassTime;
     private final Distribution arrivalDistribution;
     private final Distribution executionDistribution;
-    private final TreeSet<Event> eventCalendar;
+    private final ConcurrentSkipListSet<Event> eventCalendar;
     private final int size;
     private final Cluster cluster;
     private final ThreadLocalRandom random = ThreadLocalRandom.current();
@@ -34,7 +34,7 @@ public class ClusterQueuingSystem implements QueuingSystem {
         this.maxPassTime = maxPassTime;
         this.arrivalDistribution = arrivalDistribution;
         this.executionDistribution = executionDistribution;
-        this.eventCalendar = new TreeSet<>();
+        this.eventCalendar = new ConcurrentSkipListSet<>();
         this.size = size;
         this.taskPool = new LinkedList<>();
     }
@@ -78,7 +78,7 @@ public class ClusterQueuingSystem implements QueuingSystem {
     void executeSuitableTasks() {
         for (Task task = taskPool.peek(); cluster.isSuitable(task); task = taskPool.peek()) {
             execute(task);
-            taskPool.poll();
+            pollFromQueue();
         }
         /// TODO: 18/04/04
     }
@@ -94,7 +94,8 @@ public class ClusterQueuingSystem implements QueuingSystem {
 
     @Override
     public boolean pollFromQueue() {
-        return false;
+        Task task = taskPool.poll();
+        return task != null;
     }
 
     @Override
@@ -102,13 +103,20 @@ public class ClusterQueuingSystem implements QueuingSystem {
         return false;
     }
 
+    @SuppressWarnings("SimplifyStreamApiCallChains")
     @Override
     public void simulate() {
         createTaskArrivalEvents();
-        eventCalendar.forEach(event -> {
-            currentTime = event.getTime();
-            event.handle(this);
-        });
+        //functional programming stream is actually categorically necessary!!!
+        eventCalendar.stream().forEach(
+                event -> {
+                    currentTime = event.getTime();
+                    event.handle(this);
+                    System.out.println(event.getClass());
+                    System.out.println(event.getTime());
+                    event.getSubject().printInformation();
+                }
+        );
     }
 
     public void addExecutionEvent(Task task, double time) {
