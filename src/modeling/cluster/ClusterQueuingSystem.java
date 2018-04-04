@@ -66,36 +66,30 @@ public class ClusterQueuingSystem implements QueuingSystem {
                 maxPassTime
         );
 
-        taskPool.add(task);
-
         double previousArrive = 0;
         try {
             //100% arrival events guarantee
             previousArrive = eventCalendar.last()
                                           .getTime();
         } catch (NoSuchElementException ignore) {}
-        TaskArrivalEvent arrivalEvent = new TaskArrivalEvent(
-                task,
-                task.getArrivalPause() + previousArrive
-        );
-        eventCalendar.add(arrivalEvent);
-        task.setArrivalEvent(arrivalEvent);
+        eventCalendar.add(new TaskArrivalEvent(task, task.getArrivalPause() + previousArrive));
     }
 
-    private void executeSuitableTasks() {
+    void executeSuitableTasks() {
         for (Task task = taskPool.peek(); cluster.isSuitable(task); task = taskPool.peek()) {
             execute(task);
             taskPool.poll();
         }
+        /// TODO: 18/04/04
     }
 
-    private void execute(Task task) {
+    void execute(Task task) {
 
     }
 
     @Override
     public boolean addToQueue(Subject subject) {
-        return false;
+        return taskPool.add((Task) subject);
     }
 
     @Override
@@ -112,7 +106,31 @@ public class ClusterQueuingSystem implements QueuingSystem {
     public void simulate() {
         createTaskArrivalEvents();
         eventCalendar.forEach(event -> {
+            currentTime = event.getTime();
             event.handle(this);
         });
+    }
+
+    public void addExecutionEvent(Task task, double time) {
+        eventCalendar.add(new TaskExecutionEvent(task, time));
+    }
+
+    public double getNextExecutionTime(Task newTask) {
+        Task task = taskPool.peek();
+        if (task == null) {
+            if (cluster.isSuitable(newTask)) {
+                return currentTime;
+            }
+            return cluster.getTimeWhenSuitable(newTask);
+        }
+        return task.getExecutionEvent().getTime() + task.getExecutionTime();
+    }
+
+    /**
+     *
+     * @param taskExecutionEvent
+     */
+    public void shiftExecutionEvent(TaskExecutionEvent taskExecutionEvent) {
+
     }
 }

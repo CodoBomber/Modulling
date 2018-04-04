@@ -8,9 +8,10 @@ class TaskLeavingEvent extends Event {
 
     private final Task task;
 
-    public TaskLeavingEvent(Task task, double time) {
+    TaskLeavingEvent(Task task, double time) {
         super(time);
         this.task = task;
+        this.task.setLeavingEvent(this);
     }
 
     @Override
@@ -25,6 +26,7 @@ class TaskLeavingEvent extends Event {
 
     @Override
     public int hashCode() {
-        return 3;
+        //Самый высший приоритет
+        return 0;
     }
 }

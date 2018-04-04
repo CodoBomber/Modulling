@@ -8,14 +8,19 @@ class TaskExecutionEvent extends Event {
 
     private final Task task;
 
-    public TaskExecutionEvent(Task task, double time) {
+    TaskExecutionEvent(Task task, double time) {
         super(time);
         this.task = task;
+        this.task.setExecutionEvent(this);
     }
 
     @Override
     public void handle(QueuingSystem context) {
+        handleConcrete((ClusterQueuingSystem) context);
+    }
 
+    private void handleConcrete(ClusterQueuingSystem context) {
+        context.executeSuitableTasks();
     }
 
     @Override

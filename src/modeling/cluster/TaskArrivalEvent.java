@@ -7,22 +7,22 @@ import modeling.events.queueing.Subject;
 class TaskArrivalEvent extends Event {
 
     private final Task task;
-    private EventHandler handler;
 
-    public TaskArrivalEvent(Task task, double time) {
+    TaskArrivalEvent(Task task, double time) {
         super(time);
         this.task = task;
-    }
-
-    public void setHandler(EventHandler handler) {
-        this.handler = handler;
+        this.task.setArrivalEvent(this);
     }
 
     @Override
     public void handle(QueuingSystem context) {
-        if (handler != null) {
-            handler.handle();
-        }
+        handleConcrete((ClusterQueuingSystem) context);
+    }
+
+    private void handleConcrete(ClusterQueuingSystem context) {
+        double time = context.getNextExecutionTime(this.task);
+        context.addExecutionEvent(task, time);
+        context.addToQueue(task);
     }
 
     @Override

@@ -22,8 +22,6 @@ public class Application {
                 10d,
                 3
         ).simulate();
-
-
     }
 
 }

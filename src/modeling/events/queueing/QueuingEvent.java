@@ -10,7 +10,7 @@ class QueuingEvent extends Event {
     }
 
     @Override
-    protected void handle(QueuingSystem context) {
+    public void handle(QueuingSystem context) {
         context.pollFromQueue();
     }
 

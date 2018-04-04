@@ -26,4 +26,9 @@ public class Task extends Subject {
     public double getPassTime() {
         return passTime;
     }
+
+    @Override
+    public int compareTo(Subject o) {
+        return Double.compare(this.getLeavingEvent().getTime(), o.getLeavingEvent().getTime());
+    }
 }
