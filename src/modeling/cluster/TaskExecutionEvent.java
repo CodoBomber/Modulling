@@ -20,7 +20,8 @@ class TaskExecutionEvent extends Event {
     }
 
     private void handleConcrete(ClusterQueuingSystem context) {
-        context.executeSuitableTasks();
+        context.addLeavingEvent(task, this.getTime() + task.getExecutionTime());
+        context.executeTasks(task);
     }
 
     @Override

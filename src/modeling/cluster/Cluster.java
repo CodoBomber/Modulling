@@ -4,13 +4,14 @@ import java.util.TreeSet;
 
 public class Cluster {
 
-    private final int memoryChunks;
-    private final int coresNumber;
+    private int memoryChunks;
+    private int coresNumber;
     private TreeSet<Task> executingTasks;
 
     public Cluster(int memoryChunks, int coresNumber) {
         this.memoryChunks = memoryChunks;
         this.coresNumber = coresNumber;
+        executingTasks = new TreeSet<>();
     }
 
     public int getMemoryChunks() {
@@ -42,6 +43,10 @@ public class Cluster {
 
     public void execute(Task task) {
         executingTasks.add(task);
-        //...
+        coresNumber -= task.getCoresNumber();
+        memoryChunks -= task.getMemoryChunks();
+        if (memoryChunks < 0 || coresNumber < 0) {
+            throw new IllegalStateException("Прошла большая задача (???) #" + task.getSubjectId());
+        }
     }
 }

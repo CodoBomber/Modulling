@@ -7,7 +7,7 @@ import modeling.generators.distribution.ExponentialDistribution;
 public class Application {
 
     public static void main(String[] args) {
-        int arrivalExpectedValue = 10;
+        int arrivalExpectedValue = 1;
         int executionExpectedValue = 1;
 
         Distribution arrivalDistribution = new ExponentialDistribution(arrivalExpectedValue);

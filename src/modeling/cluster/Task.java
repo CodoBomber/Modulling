@@ -31,4 +31,12 @@ public class Task extends Subject {
     public int compareTo(Subject o) {
         return Double.compare(this.getLeavingEvent().getTime(), o.getLeavingEvent().getTime());
     }
+
+    @Override
+    public void printInformation() {
+        super.printInformation();
+        System.out.println("Memory chunks: " + memoryChunks);
+        System.out.println("CoresNumber " + coresNumber);
+        System.out.println("PassTime " + passTime);
+    }
 }

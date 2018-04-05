@@ -75,16 +75,12 @@ public class ClusterQueuingSystem implements QueuingSystem {
         eventCalendar.add(new TaskArrivalEvent(task, task.getArrivalPause() + previousArrive));
     }
 
-    void executeSuitableTasks() {
-        for (Task task = taskPool.peek(); cluster.isSuitable(task); task = taskPool.peek()) {
-            execute(task);
+    void executeTasks(Task task) {
+        //for (Task task = taskPool.peek(); cluster.isSuitable(task); task = taskPool.peek()) {
+            cluster.execute(task);
             pollFromQueue();
-        }
+        //}
         /// TODO: 18/04/04
-    }
-
-    void execute(Task task) {
-
     }
 
     @Override
@@ -140,5 +136,9 @@ public class ClusterQueuingSystem implements QueuingSystem {
      */
     public void shiftExecutionEvent(TaskExecutionEvent taskExecutionEvent) {
 
+    }
+
+    public void addLeavingEvent(Task task, double time) {
+        eventCalendar.add(new TaskLeavingEvent(task, time));
     }
 }

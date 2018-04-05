@@ -16,6 +16,10 @@ class TaskLeavingEvent extends Event {
 
     @Override
     public void handle(QueuingSystem context) {
+        handleConcrete((ClusterQueuingSystem) context);
+    }
+
+    private void handleConcrete(ClusterQueuingSystem context) {
 
     }
 
