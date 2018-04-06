@@ -7,7 +7,6 @@ import modeling.generators.distribution.Distribution;
 
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
-import java.util.Queue;
 import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.IntStream;
@@ -22,7 +21,9 @@ public class ClusterQueuingSystem implements QueuingSystem {
     private final int size;
     private final Cluster cluster;
     private final ThreadLocalRandom random = ThreadLocalRandom.current();
-    private final Queue<Task> taskPool;
+    private final LinkedList<Task> taskPool;
+    private int queuedTaskCounter;
+    private double queuedTime;
 
     public ClusterQueuingSystem(int memoryChunks,
                                 int coresNumber,
@@ -43,7 +44,7 @@ public class ClusterQueuingSystem implements QueuingSystem {
         eventCalendar.forEach(
                 e -> {
                     System.out.println("TIME: " + e.getTime());
-                    e.getSubject().printInformation();
+                    e.printInformation();
                 }
         );
     }
@@ -61,8 +62,8 @@ public class ClusterQueuingSystem implements QueuingSystem {
         );
         Task task = new Task(
                 subject,
-                random.nextInt(1, cluster.getMemoryChunks()),
-                random.nextInt(1, cluster.getCoresNumber()),
+                random.nextInt(16, 65),
+                random.nextInt(8, 33),
                 maxPassTime
         );
 
@@ -75,23 +76,56 @@ public class ClusterQueuingSystem implements QueuingSystem {
         eventCalendar.add(new TaskArrivalEvent(task, task.getArrivalPause() + previousArrive));
     }
 
-    void executeTasks(Task task) {
-        //for (Task task = taskPool.peek(); cluster.isSuitable(task); task = taskPool.peek()) {
-            cluster.execute(task);
-            pollFromQueue();
-        //}
-        /// TODO: 18/04/04
+    void executeTasks() {
+        for (Task task = taskPool.peek(); cluster.isSuitable(task); task = taskPool.peek()) {
+            Task suitableTask = taskPool.poll();
+            eventCalendar.add(new TaskLeavingEvent(suitableTask, currentTime + task.getExecutionTime()));
+            suitableTask.setExecutionStartTime(currentTime);
+            queuedTime += currentTime - suitableTask.getArrivalEvent().getTime();
+            if (queuedTime > 0)
+                queuedTaskCounter++;
+            cluster.execute(suitableTask);
+        }
+    }
+
+    /**
+     * queue rebalancing method
+     */
+    void schedule() {
+        rebalanceAvalanchely();
+        executeTasks();
+    }
+
+    /**
+     * Avalanche algorithm which moves all suitable tasks to direction on the end of our queue.
+     */
+    private void rebalanceAvalanchely() {
+        int index;
+
+        for (int i = taskPool.size() - 2; i >= 0; i--) {
+            if (!cluster.isSuitable(taskPool.get(i)) && cluster.isSuitable(taskPool.get(i + 1))) {
+                index = i;
+                while ((index + 1) < taskPool.size() && cluster.isSuitable(taskPool.get(index + 1))
+                        && taskPool.get(index).getPassTime() > 0) {
+//                    tempTask = taskPool.get(index);
+                    taskPool.set(index + 1, taskPool.set(index, taskPool.get(index + 1)));
+                    taskPool.get(index).decrementExecutionTime(taskPool.get(index + 1).getExecutionTime());
+                    taskPool.get(index + 1).incrementExecutionTime(taskPool.get(index).getExecutionTime());
+                }
+            }
+        }
     }
 
     @Override
     public boolean addToQueue(Subject subject) {
+//        queuedTaskCounter++;
         return taskPool.add((Task) subject);
     }
 
     @Override
+    @Deprecated
     public boolean pollFromQueue() {
-        Task task = taskPool.poll();
-        return task != null;
+        return false;
     }
 
     @Override
@@ -107,38 +141,26 @@ public class ClusterQueuingSystem implements QueuingSystem {
         eventCalendar.stream().forEach(
                 event -> {
                     currentTime = event.getTime();
+                    taskPool.forEach(task -> task.onTimeTick(currentTime));
                     event.handle(this);
                     System.out.println(event.getClass());
                     System.out.println(event.getTime());
-                    event.getSubject().printInformation();
+                    event.printInformation();
+                    System.out.println(taskPool);
                 }
         );
+
+        System.out.println("################################TOTAL##############################");
+        System.out.println("NOT FOR ALL: " + queuedTime / queuedTaskCounter);
+        System.out.println("FOR ALL: " + queuedTime / size);
     }
 
-    public void addExecutionEvent(Task task, double time) {
-        eventCalendar.add(new TaskExecutionEvent(task, time));
-    }
-
-    public double getNextExecutionTime(Task newTask) {
-        Task task = taskPool.peek();
-        if (task == null) {
-            if (cluster.isSuitable(newTask)) {
-                return currentTime;
-            }
-            return cluster.getTimeWhenSuitable(newTask);
-        }
-        return task.getExecutionEvent().getTime() + task.getExecutionTime();
-    }
-
-    /**
-     *
-     * @param taskExecutionEvent
-     */
-    public void shiftExecutionEvent(TaskExecutionEvent taskExecutionEvent) {
-
-    }
 
     public void addLeavingEvent(Task task, double time) {
         eventCalendar.add(new TaskLeavingEvent(task, time));
+    }
+
+    public void finishTask(Task task) {
+        cluster.freeTaskResource(task);
     }
 }

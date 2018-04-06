@@ -22,5 +22,5 @@ public abstract class Event implements Comparable<Event> {
                 : compare;
     }
 
-    public abstract Subject getSubject();
+    public abstract void printInformation();
 }

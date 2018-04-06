@@ -14,13 +14,18 @@ public class Subject implements Comparable<Subject> {
     private final double executionTime;
 
     private Event arrivalEvent;
-    private Event executionEvent;
     private Event leavingEvent;
+
+    private double executionStartTime;
 
     public Subject(int subjectId, double arrivalTime, double queuingTime) {
         this.subjectId = subjectId;
         this.arrivalPause = arrivalTime;
         this.executionTime = queuingTime;
+    }
+
+    public double getExecutionStartTime() {
+        return executionStartTime;
     }
 
     public int getSubjectId() {
@@ -43,7 +48,7 @@ public class Subject implements Comparable<Subject> {
     public void printInformation() {
         System.out.println(toString());
         System.out.println("Arrival in: " + arrivalEvent.getTime());
-//        System.out.println("Processed in: " + executionEvent.getTime());
+        System.out.println("Processed in: " + executionStartTime);
 //        System.out.println("Leaving in: " + leavingEvent.getTime());
         System.out.println("Arrival pause: " + arrivalPause);
         System.out.println("Execution time: " + executionTime);
@@ -51,10 +56,6 @@ public class Subject implements Comparable<Subject> {
 
     public Event getArrivalEvent() {
         return arrivalEvent;
-    }
-
-    public Event getExecutionEvent() {
-        return executionEvent;
     }
 
     public Event getLeavingEvent() {
@@ -65,12 +66,20 @@ public class Subject implements Comparable<Subject> {
         this.arrivalEvent = arrivalEvent;
     }
 
-    public void setExecutionEvent(Event executionEvent) {
-        this.executionEvent = executionEvent;
-    }
-
     public void setLeavingEvent(Event leavingEvent) {
         this.leavingEvent = leavingEvent;
+    }
+
+    public void setExecutionStartTime(double time) {
+        this.executionStartTime = time;
+    }
+
+    public void decrementExecutionTime(double executionTime) {
+        this.executionStartTime -= executionTime;
+    }
+
+    public void incrementExecutionTime(double executionTime) {
+        this.executionStartTime += executionTime;
     }
 
     @Override

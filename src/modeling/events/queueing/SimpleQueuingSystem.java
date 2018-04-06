@@ -69,7 +69,7 @@ public class SimpleQueuingSystem implements QueuingSystem {
 //        if (true) { return; }
         System.out.println("TIME:" + event.getTime());
         System.out.println("CURRENT EVENT IS: " + event.getClass().getSimpleName());
-        System.out.println("CURRENT CLIENT IS: " + event.getSubject());
+//        System.out.println("CURRENT CLIENT IS: " + event.getSubject());
         System.out.println("Queue size is: " + queue.size());
         System.out.println();
     }

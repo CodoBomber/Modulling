@@ -2,11 +2,11 @@ package modeling.cluster;
 
 import modeling.events.queueing.Subject;
 
-public class Task extends Subject {
+public class Task extends Subject implements Notifier {
 
-    private final int memoryChunks;
-    private final int coresNumber;
-    private final double passTime;
+    private int memoryChunks;
+    private int coresNumber;
+    private double passTime;
 
     public Task(Subject subject, int memoryChunks, int coresNumber, double passTime) {
         super(subject.getSubjectId(), subject.getArrivalPause(), subject.getExecutionTime());
@@ -38,5 +38,18 @@ public class Task extends Subject {
         System.out.println("Memory chunks: " + memoryChunks);
         System.out.println("CoresNumber " + coresNumber);
         System.out.println("PassTime " + passTime);
+        System.out.println("Executing ");
+    }
+
+    @Override
+    public String toString() {
+        return String.format("{%d: %.3f, %.3f}",getSubjectId(), getExecutionTime(), getPassTime());
+    }
+
+    @Override
+    public void onTimeTick(double currentTime) {
+        if (passTime > 0) {
+            passTime -=  currentTime - getArrivalEvent().getTime();
+        }
     }
 }

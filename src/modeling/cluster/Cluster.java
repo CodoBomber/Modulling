@@ -28,19 +28,6 @@ public class Cluster {
                 && this.getMemoryChunks() >= task.getMemoryChunks();
     }
 
-    public double getTimeWhenSuitable(Task taskToExecute) {
-        double totalMemoryChunks = 0d, totalCoresNumber = 0d;
-        for (Task task : executingTasks) {
-            totalCoresNumber += task.getCoresNumber();
-            totalMemoryChunks += task.getMemoryChunks();
-            if (totalCoresNumber >= taskToExecute.getCoresNumber()
-                    && totalMemoryChunks >= taskToExecute.getMemoryChunks()) {
-                return task.getLeavingEvent().getTime();
-            }
-        }
-        throw new IllegalStateException("Неверное состояние задачи #" + taskToExecute.getSubjectId());
-    }
-
     public void execute(Task task) {
         executingTasks.add(task);
         coresNumber -= task.getCoresNumber();
@@ -48,5 +35,13 @@ public class Cluster {
         if (memoryChunks < 0 || coresNumber < 0) {
             throw new IllegalStateException("Прошла большая задача (???) #" + task.getSubjectId());
         }
+    }
+
+    public void freeTaskResource(Task task) {
+        if (!executingTasks.remove(task)) {
+            throw new IllegalStateException("Извлекается　несуществующая　задача　#" + task.getSubjectId());
+        }
+        memoryChunks += task.getMemoryChunks();
+        coresNumber += task.getCoresNumber();
     }
 }

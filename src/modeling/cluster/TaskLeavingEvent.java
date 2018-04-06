@@ -19,11 +19,16 @@ class TaskLeavingEvent extends Event {
         handleConcrete((ClusterQueuingSystem) context);
     }
 
-    private void handleConcrete(ClusterQueuingSystem context) {
-
+    @Override
+    public void printInformation() {
+        task.printInformation();
     }
 
-    @Override
+    private void handleConcrete(ClusterQueuingSystem context) {
+        context.finishTask(task);
+        context.schedule();
+    }
+
     public Subject getSubject() {
         return task;
     }

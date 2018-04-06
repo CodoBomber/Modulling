@@ -24,6 +24,10 @@ class LeavingEvent extends Event {
     }
 
     @Override
+    public void printInformation() {
+
+    }
+
     public Subject getSubject() {
         return subject;
     }

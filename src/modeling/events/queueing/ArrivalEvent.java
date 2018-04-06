@@ -15,6 +15,10 @@ class ArrivalEvent extends Event {
     }
 
     @Override
+    public void printInformation() {
+
+    }
+
     public Subject getSubject() {
         return subject;
     }
