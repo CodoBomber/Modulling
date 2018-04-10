@@ -2,6 +2,7 @@ package modeling.cluster;
 
 import modeling.events.queueing.Event;
 import modeling.events.queueing.QueuingSystem;
+import modeling.events.queueing.Subject;
 
 import java.util.List;
 
@@ -25,6 +26,11 @@ class ExecutionEvent extends Event {
     @Override
     public void handle(QueuingSystem context) {
         handleConcrete((ClusterQueuingSystem) context);
+    }
+
+    @Override
+    public Subject getSubject() {
+        return null;
     }
 
     @Override

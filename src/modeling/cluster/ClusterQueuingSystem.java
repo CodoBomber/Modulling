@@ -6,10 +6,8 @@ import modeling.events.queueing.Subject;
 import modeling.generators.distribution.Distribution;
 
 import java.util.LinkedList;
-import java.util.NoSuchElementException;
 import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.stream.IntStream;
 
 public class ClusterQueuingSystem implements QueuingSystem {
 
@@ -49,12 +47,7 @@ public class ClusterQueuingSystem implements QueuingSystem {
         );
     }
 
-    private void createTaskArrivalEvents() {
-        IntStream.range(0, size)
-                 .forEach(this::generateTasks);
-    }
-
-    private void generateTasks(int subjectId) {
+    public void generateTask(int subjectId, double previousArrive) {
         Subject subject = new Subject(
                 subjectId,
                 arrivalDistribution.getNextValue(),
@@ -66,13 +59,6 @@ public class ClusterQueuingSystem implements QueuingSystem {
                 random.nextInt(8, 33),
                 maxPassTime
         );
-
-        double previousArrive = 0;
-        try {
-            //100% arrival events guarantee
-            previousArrive = eventCalendar.last()
-                                          .getTime();
-        } catch (NoSuchElementException ignore) {}
         eventCalendar.add(new TaskArrivalEvent(task, task.getArrivalPause() + previousArrive));
     }
 
@@ -136,23 +122,23 @@ public class ClusterQueuingSystem implements QueuingSystem {
     @SuppressWarnings("SimplifyStreamApiCallChains")
     @Override
     public void simulate() {
-        createTaskArrivalEvents();
+        generateTask(0, 0);
         //functional programming stream is actually categorically necessary!!!
         eventCalendar.stream().forEach(
                 event -> {
                     currentTime = event.getTime();
                     taskPool.forEach(task -> task.onTimeTick(currentTime));
                     event.handle(this);
-                    System.out.println(event.getClass());
-                    System.out.println(event.getTime());
-                    event.printInformation();
-                    System.out.println(taskPool);
+//                    System.out.println(event.getClass());
+//                    System.out.println(event.getTime());
+//                    event.printInformation();
+//                    System.out.println(taskPool);
                 }
         );
 
-        System.out.println("################################TOTAL##############################");
-        System.out.println("NOT FOR ALL: " + queuedTime / queuedTaskCounter);
-        System.out.println("FOR ALL: " + queuedTime / size);
+//        System.out.println("################################TOTAL##############################");
+//        System.out.println("NOT FOR ALL: " + queuedTime / queuedTaskCounter);
+        System.out.println(String.format("%.5f", queuedTime / size));
     }
 
 
@@ -162,5 +148,9 @@ public class ClusterQueuingSystem implements QueuingSystem {
 
     public void finishTask(Task task) {
         cluster.freeTaskResource(task);
+    }
+
+    public int getSize() {
+        return size;
     }
 }

@@ -14,6 +14,8 @@ public abstract class Event implements Comparable<Event> {
         return time;
     }
 
+    abstract public Subject getSubject();
+
     @Override
     public int compareTo(Event o) {
         int compare = Double.compare(this.time, o.time);

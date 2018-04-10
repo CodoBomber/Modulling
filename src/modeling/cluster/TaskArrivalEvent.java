@@ -27,6 +27,9 @@ class TaskArrivalEvent extends Event {
     private void handleConcrete(ClusterQueuingSystem context) {
 //        double time = context.getNextExecutionTime(this.task);
 //        context.addExecutionEvent(task, time);
+        if (task.getSubjectId() < context.getSize() - 1) {
+            context.generateTask(task.getSubjectId() + 1, getTime());
+        }
         context.addToQueue(task);
         context.schedule();
     }
